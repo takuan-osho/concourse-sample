@@ -20,4 +20,7 @@ resources:
 - name: openresty-builder-docker-image
   type: docker-image
   source:
+    email: {{docker-hub-email}}
+    username: {{docker-hub-username}}
+    password: {{docker-hub-password}}
     repository: {{docker-hub-openresty-builder}}
