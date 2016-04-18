@@ -15,7 +15,7 @@ resources:
 - name: openresty-builder-resource
   type: git
   source:
-    uri: git@bitbucket.org:takuan_osho/concourse-sample.git
+    uri: https://github.com/takuan-osho/concourse-sample.git
     private_key: {{github-private-key}}
 
 - name: openresty-builder-docker-image
