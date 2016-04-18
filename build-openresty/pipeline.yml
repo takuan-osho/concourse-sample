@@ -7,7 +7,7 @@ jobs:
   - get: openresty-builder-docker-image
     trigger: true
   - task: build-openresty
-    file: openresty-builder-resource/build-openresty/build.sh
+    file: openresty-builder-resource/build-openresty/build.yml
   serial: true
 
 
