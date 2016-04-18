@@ -1,0 +1,10 @@
+---
+platform: linux
+
+image: docker:///takuan-osho/openresty-build-dependency
+
+inputs:
+  - name: resource-dockerfile-openresty-build-dependency
+
+run:
+  path: resource-dockerfile-openresty-build-dependency/build-openresty.sh

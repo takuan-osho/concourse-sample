@@ -1,0 +1,37 @@
+---
+jobs:
+- name: job-publish-docker-image-building-openresty
+  serial: true
+  plan:
+  - get: resource-dockerfile-openresty-build-dependency
+    trigger: true
+  - put: docker-image-building-openresty
+    params:
+      build: resource-dockerfile-openresty-build-dependency/build-openresty/dockerfiles/openresty-build-dependency
+
+- name: job-build-openresty
+  plan:
+  - get: docker-image-building-openresty
+    trigger: true
+  - task: build-openresty
+    config:
+      platform: linux
+      image: docker:///takuan-osho/openresty-build-dependency
+      inputs:
+        - name: resource-dockerfile-openresty-build-dependency
+      run:
+        path: resource-dockerfile-openresty-build-dependency/build-openresty.sh
+
+resources:
+- name: resource-dockerfile-openresty-build-dependency
+  type: git
+  source:
+    uri: https://github.com/takuan-osho/concourse-sample.git
+
+- name: docker-image-building-openresty
+  type: docker-image
+  source:
+    email: {{docker-hub-email}}
+    username: {{docker-hub-username}}
+    password: {{docker-hub-password}}
+    repository: {{docker-hub-openresty-builder}}
