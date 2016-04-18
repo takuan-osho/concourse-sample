@@ -1,0 +1,21 @@
+---
+jobs:
+- name: build-openresty
+  plan:
+  - get: openresty-builder-resource
+    trigger: true
+  - get: openresty-builder-docker-image
+    trigger: true
+  - task: build-openresty
+    file: openresty-builder-resource/build-openresty/build.sh
+
+
+resources:
+- name: openresty-builder-resource
+  type: git
+  source:
+    uri: https://github.com/takuan-osho/concourse-sample.git
+
+- name: openresty-builder-docker-image
+  type: docker-image
+    repository: {{docker-hub-openresty-builder}}
