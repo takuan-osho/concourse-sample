@@ -8,3 +8,4 @@ RUN apk update && apk upgrade $$ apk add \
   wget \
   perl && \
   rm -rf /var/cache/apk/*
+ADD ./nginx-build /bin
