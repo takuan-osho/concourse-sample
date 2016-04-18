@@ -8,6 +8,7 @@ jobs:
     trigger: true
   - task: build-openresty
     file: openresty-builder-resource/build-openresty/build.sh
+  serial: true
 
 
 resources:
@@ -18,4 +19,5 @@ resources:
 
 - name: openresty-builder-docker-image
   type: docker-image
+  source:
     repository: {{docker-hub-openresty-builder}}
