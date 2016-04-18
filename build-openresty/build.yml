@@ -4,7 +4,7 @@ platform: linux
 image: docker:///takuan-osho/openresty-builder
 
 inputs:
-  - name: openresty-builder-resource
+- name: openresty-builder-resource
 
 run:
   path: openresty-builder-resource/build-openresty/build.sh
