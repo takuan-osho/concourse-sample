@@ -1,16 +1,4 @@
 ---
-jobs:
-- name: build-openresty
-  plan:
-  - get: openresty-builder-resource
-    trigger: true
-  - get: openresty-builder-docker-image
-    trigger: true
-  - task: build-openresty
-    file: openresty-builder-resource/build-openresty/build.yml
-  serial: true
-
-
 resources:
 - name: openresty-builder-resource
   type: git
@@ -22,3 +10,15 @@ resources:
   type: docker-image
   source:
     repository: {{docker-hub-openresty-builder}}
+
+
+jobs:
+- name: build-openresty
+  plan:
+  - get: openresty-builder-resource
+    trigger: true
+  - get: openresty-builder-docker-image
+    trigger: true
+  - task: build-openresty
+    file: openresty-builder-resource/build-openresty/build.yml
+  serial: true
