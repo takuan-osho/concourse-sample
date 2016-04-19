@@ -10,4 +10,6 @@ RUN yum -y install \
   tar \
   wget && \
   yum clean all
-ADD ./nginx-build /usr/bin
+RUN wget https://github.com/cubicdaiya/nginx-build/releases/download/v0.9.1/nginx-build-linux-amd64-0.9.1.tar.gz
+RUN tar xvzf nginx-build-linux-amd64-0.9.1.tar.gz
+RUN mv nginx-build /usr/bin
