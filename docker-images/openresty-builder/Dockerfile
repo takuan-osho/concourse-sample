@@ -33,3 +33,12 @@ RUN gpg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A170311380
 RUN curl -sSL https://get.rvm.io | bash -s stable --ruby
 RUN source /usr/local/rvm/scripts/rvm
 RUN gem install fpm -v 1.4.0
+
+# Dependencies for building 3rd party nginx modules
+RUN yum -y install \
+  openldap-devel \
+  git && \
+  yum clean all
+
+# Add a config file of nginx 3rd party modules
+ADD modules.cfg ./
