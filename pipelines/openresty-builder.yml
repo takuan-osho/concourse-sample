@@ -18,7 +18,7 @@ jobs:
   - name: openresty-builder
     serial: true
     plan:
-    - get: openresty-builder-resource
+    - get: openresty-builder
       trigger: true
     - put: openresty-builder-docker-image
       params:
