@@ -1,0 +1,25 @@
+---
+resources:
+  - name: openresty-builder
+    type: git
+    source:
+      uri: https://github.com/takuan-osho/concourse-sample.git
+
+  - name: openresty-builder-docker-image
+    type: docker-image
+    source:
+      email: {{docker-hub-email}}
+      username: {{docker-hub-username}}
+      password: {{docker-hub-password}}
+      repository: {{docker-hub-openresty-builder}}
+
+
+jobs:
+  - name: openresty-builder
+    serial: true
+    plan:
+    - get: openresty-builder-resource
+      trigger: true
+    - put: openresty-builder-docker-image
+      params:
+        build: openresty-builder/dockerfiles/openresty-builder/
