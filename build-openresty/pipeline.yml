@@ -14,10 +14,11 @@ resources:
 
 jobs:
 - name: build-openresty
+  serial: true
   plan:
-  - get: openresty-builder-resource
-    trigger: true
-  - get: openresty-builder-docker-image
+  - aggregate:
+    - get: openresty-builder-docker-image
+    - get: openresty-builder-resource
+      trigger: true
   - task: build-openresty
     file: openresty-builder-resource/build-openresty/build.yml
-  serial: true
