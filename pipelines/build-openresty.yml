@@ -1,6 +1,6 @@
 ---
 resources:
-- name: openresty-builder-resource
+- name: openresty-builder
   type: git
   source:
     uri: https://github.com/takuan-osho/concourse-sample.git
@@ -18,7 +18,7 @@ jobs:
   plan:
   - aggregate:
     - get: openresty-builder-docker-image
-    - get: openresty-builder-resource
+    - get: openresty-builder
       trigger: true
   - task: build-openresty
-    file: openresty-builder-resource/build-openresty/build.yml
+    file: openresty-builder/tasks/build-openresty.yml

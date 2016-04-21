@@ -1,0 +1,10 @@
+---
+platform: linux
+
+image: docker:///takuanosho/openresty-builder
+
+inputs:
+- name: openresty-builder
+
+run:
+  path: openresty-builder/scripts/build-openresty.sh
