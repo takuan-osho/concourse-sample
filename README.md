@@ -1,4 +1,5 @@
 # Requirements
+- [Vagrant](https://www.vagrantup.com/)
 - [Docker Toolbox](https://www.docker.com/products/docker-toolbox)
 
 # Setup
