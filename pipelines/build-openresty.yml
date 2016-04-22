@@ -22,3 +22,10 @@ jobs:
           trigger: true
       - task: build-openresty
         file: openresty-builder/tasks/build-openresty.yml
+      - task: send-to-repository
+        file: openresty-builder/tasks/send-to-repository.yml
+        params:
+          USERNAME: {{username}}
+          PASSWORD: {{password}}
+          TARGET_HOST: {{target-host}}
+          TARGET_PATH: {{target-path}}

@@ -16,7 +16,6 @@ resources:
 
 jobs:
   - name: openresty-builder
-    serial: true
     plan:
     - get: openresty-builder
       trigger: true
