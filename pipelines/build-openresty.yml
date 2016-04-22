@@ -1,24 +1,24 @@
 ---
 resources:
-- name: openresty-builder
-  type: git
-  source:
-    uri: https://github.com/takuan-osho/concourse-sample.git
-    private_key: {{github-private-key}}
+  - name: openresty-builder
+    type: git
+    source:
+      uri: https://github.com/takuan-osho/concourse-sample.git
+      private_key: {{github-private-key}}
 
-- name: openresty-builder-docker-image
-  type: docker-image
-  source:
-    repository: {{docker-hub-openresty-builder}}
+  - name: openresty-builder-docker-image
+    type: docker-image
+    source:
+      repository: {{docker-hub-openresty-builder}}
 
 
 jobs:
-- name: build-openresty
-  serial: true
-  plan:
-  - aggregate:
-    - get: openresty-builder-docker-image
-    - get: openresty-builder
-      trigger: true
-  - task: build-openresty
-    file: openresty-builder/tasks/build-openresty.yml
+  - name: build-openresty
+    serial: true
+    plan:
+      - aggregate:
+        - get: openresty-builder-docker-image
+        - get: openresty-builder
+          trigger: true
+      - task: build-openresty
+        file: openresty-builder/tasks/build-openresty.yml
