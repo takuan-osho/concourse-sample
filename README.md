@@ -1,6 +1,5 @@
 # Requirements
 - [Vagrant](https://www.vagrantup.com/)
-- [Docker Toolbox](https://www.docker.com/products/docker-toolbox)
 
 # Setup
 
@@ -23,6 +22,25 @@ And then login with `fly` CLI.
 ```bash
 fly -t sample login -c http://192.168.100.4:8080
 fly -t sample sync
+```
+
+Make a `credentials.yml` file in `config` directory. Its contents are as belows:
+
+```yaml
+docker-hub-email: ${your email}
+docker-hub-username: ${your docker hub account}
+docker-hub-password: ${your docker hub password}
+docker-hub-openresty-builder: <${your docker hub account}/${any name you like}>
+
+username: ${username}
+password: ${password}
+target-host: ${target hostname}
+target-path: ${rpm package destination}
+
+github-private-key: |-
+  -----BEGIN RSA PRIVATE KEY-----
+  (your secret key...)
+  -----END RSA PRIVATE KEY-----
 ```
 
 Activate the script for updating pipelines.
