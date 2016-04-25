@@ -18,7 +18,6 @@ jobs:
   - name: openresty-builder
     plan:
     - get: openresty-builder
-      trigger: true
     - put: openresty-builder-docker-image
       params:
         build: openresty-builder/dockerfiles/openresty-builder/
