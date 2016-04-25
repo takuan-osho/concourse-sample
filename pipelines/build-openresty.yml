@@ -22,6 +22,11 @@ jobs:
           trigger: true
       - task: build-openresty
         file: openresty-builder/tasks/build-openresty.yml
+        params:
+          OPENRESTY_VERSION: {{openresty-version}}
+          PCRE_VERSION: {{pcre-version}}
+          OPENSSL_VERSION: {{openssl-version}}
+          ZLIB_VERSION: {{zlib-version}}
       - task: send-to-repository
         file: openresty-builder/tasks/send-to-repository.yml
         params:
@@ -29,3 +34,4 @@ jobs:
           PASSWORD: {{password}}
           TARGET_HOST: {{target-host}}
           TARGET_PATH: {{target-path}}
+          OPENRESTY_VERSION: {{openresty-version}}

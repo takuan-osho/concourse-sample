@@ -8,4 +8,3 @@ run:
   path: openresty-builder/scripts/send-to-repository.sh
 params:
   INPUTS_NAME: rpm-package
-  OPENRESTY_VERSION: 1.9.7.4
