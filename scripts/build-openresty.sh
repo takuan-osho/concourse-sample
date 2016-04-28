@@ -12,8 +12,7 @@ nginx-build -d work \
   -openssl \
   -opensslversion=${OPENSSL_VERSION} \
   -zlib \
-  -zlibversion=${ZLIB_VERSION} \
-  -m modules.cfg
+  -zlibversion=${ZLIB_VERSION}
 cd work/openresty/${OPENRESTY_VERSION}/openresty-${OPENRESTY_VERSION}
 make install DESTDIR=/tmp/openresty
 cd $CWD
