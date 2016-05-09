@@ -1,4 +1,4 @@
 openresty-version: 1.9.7.4
 pcre-version: 8.38
-openssl-version: 1.0.2g
+openssl-version: 1.0.2h
 zlib-version: 1.2.8
