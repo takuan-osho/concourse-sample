@@ -77,6 +77,11 @@ You should replace `<any name is OK>` with any name you want because its name wi
 
 Save this file as the name you want. For example, `timer-curl.yml`
 
+If you want to set a pipeline including more complicated shell scripts, you should read this tutorial section below:
+
+- [04 - Basic pipeline](https://github.com/starkandwayne/concourse-tutorial#04---basic-pipeline)
+  - [sample codes](https://github.com/starkandwayne/concourse-tutorial/tree/master/04_basic_pipeline)
+
 ## Set the pipeline to Concourse CI
 
 Set the pipeline to target Concourse CI like this:
