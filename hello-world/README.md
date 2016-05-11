@@ -4,30 +4,29 @@ This document shows you how to set your recurring manual tasks to Concourse CI.
 
 After reading it and setting tasks properly, your tedious tasks might be automated by Concourse CI.
 
-## Sections
+## Section
 
-1. Download `fly` command binary and locate it to your path
-2. Login and register target Concourse CI with `fly`
-3. Write a basic pipeline
-4. Set the pipeline to Concourse CI
-5. Unpause the pipeline
-6. (Optional) Pause the pipeline
-7. (Optional) Remove the pipeline
+1. [Download `fly` command](https://github.com/takuan-osho/concourse-sample/tree/master/hello-world#download-fly-command)
+2. [Login and register target Concourse CI with GitHub OAuth](https://github.com/takuan-osho/concourse-sample/tree/master/hello-world#write-your-pipeline)
+3. [Write your pipeline](https://github.com/takuan-osho/concourse-sample/tree/master/hello-world#write-your-pipeline)
+4. [Set your pipeline](https://github.com/takuan-osho/concourse-sample/tree/master/hello-world#set-your-pipeline)
+5. [Unpause your pipeline](https://github.com/takuan-osho/concourse-sample/tree/master/hello-world#unpause-your-pipeline)
+6. [Suppliments](https://github.com/takuan-osho/concourse-sample/tree/master/hello-world#suppliments)
 
-## Download `fly` command binary and locate it to your path
+## Download `fly` command
 
-Open the URL of Concourse CI in your browser and click the `fly` CLI appropriate for your operating system.
+Open the URL of your Concourse CI in your browser.
 
-Once downloaded, move the `fly` binary into your path, such as `/usr/local/bin` . Don't forget to make it executable.
+![Concourse CI Top page](concourse-ci-top.png)
+
+Once the page loads in your browser, click to download the `fly` CLI appropriate for your operating system, make it executable and move into your path.
 
 ```bash
 sudo chmod 0755 ~/Downloads/fly
 sudo mv ~/Downloads/fly /usr/local/bin
 ```
 
-## Login and register target Concourse CI with `fly`
-
-In order to use `fly` command for setting pipelines to Concourse CI, it is the first thing to login and register target Concourse CI.
+## Login and register target Concourse CI with GitHub OAuth
 
 ```bash
 fly --target ci login -c <your Concourse CI URL>
@@ -46,79 +45,107 @@ enter token:
 
 Open `http://<your Concourse CI URL>/auth/github` in your browser, copy the token shown on the page and enter the token to your prompt.
 
-## Write a basic pipeline
+## Write your pipeline
 
-If you want target Concourse CI to `curl -I https://google.com` every 5 minutes, a basic pipeline file is like this:
+For example, if you want target Concourse CI to `curl -I https://google.com` every 5 minutes, make some files like this.
+
+```
+sample-repository
+├── pipeline.yml
+├── task_curl.sh
+└── task_curl.yml
+```
+
+You should do this:
+
+```
+sudo chmod 755 task_curl.sh
+```
+
+`task_curl.sh` is like this:
+
+```bash
+#!/bin/sh
+
+curl -I https://google.com
+```
+
+`task_curl.yml` is here.
 
 ```yaml
+---
+platform: linux
+image: docker:///tutum/curl
+inputs:
+  - name: my-ci-repository
+run:
+  path: my-ci-repository/task_curl.sh
+```
+
+Codes of `pipeline.yml` are here.
+
+```yaml
+---
 resources:
-  - name: timer
-    type: time
-    source:
-      interval: 5m
+- name: my-ci-repository
+  type: git
+  source:
+    uri: https://github.com/<your account name>/<your sample repo name>.git
+
+- name: my-timer
+  type: time
+  source:
+    interval: 2m
 
 jobs:
-  - name: <any name is OK>
-    plan:
-      - get: timer
-        trigger: true
-      - task: curl
-        config:
-          platform: linux
-          image: docker:///tutum/curl
-          run:
-            path: curl
-            args:
-              - -I
-              - https://google.com
+- name: recurring-curl
+  serial: true
+  plan:
+  - get: my-ci-repository
+  - get: my-timer
+    trigger: true
+  - task: hello-world
+    file: my-ci-repository/task_curl.yml
 ```
 
-You should replace `<any name is OK>` with any name you want because its name will be shown on Concourse CI Web UI.
+You should replace `https://github.com/<your account name>/<your sample repo name>.git` with the real URI of your repository.
 
-Save this file as the name you want. For example, `timer-curl.yml`
+Then you should do `git init` in `sample-repository`, `git commit` and `git push` to your github repository (`https://github.com/<your account name>/<your sample repo name>.git`).
 
-If you want to set a pipeline including more complicated shell scripts, you should read this tutorial section below:
-
-- [03 - Task scripts](https://github.com/starkandwayne/concourse-tutorial#03---task-scripts)
-  - [sample codes](https://github.com/starkandwayne/concourse-tutorial/tree/master/03_task_scripts)
-
-## Set the pipeline to Concourse CI
-
-Set the pipeline to target Concourse CI like this:
+## Set your pipeline
 
 ```bash
-fly -t ci set-pipeline -c timer-curl.yml -p <any pipeline name you want>
+fly -t ci set-pipeline -c pipeline.yml -p curl
 ```
 
-You should replace `<any pipeline name you want>` with another name you want because its name will be shown on Concourse CI Web UI.
-
-## Unpause the pipeline
-
-After setting your pipeline to your Concourse CI, the next thing you should do is to unpause your pipeline.
-
-The command for unpausing some pipeline is like this:
+## Unpause your pipeline
 
 ```bash
-fly -t ci unpause-pipeline -p <the pipeline name you want to unpause>
+fly -t ci unpause-pipeline -p curl
 ```
 
-## (Optional) Remove the pipeline
+Open your concourse CI page in your browser.
 
-If you want to remove your pipeline from your Concourse CI, the command is like this:
+![Pipeline on Concourse CI](concourse-ci-pipeline.png)
+
+If your page is like above, there are no problem! Workers do `curl -I https://google.com` every 2 minutes repeatedly on your Concourse CI.
+
+## (Optional) Remove your pipeline
+
+If you want to remove your pipeline from your Concourse CI, you should execute `destroy-pipeline` subcommand with `fly`.
 
 ```bash
-fly -t ci destroy-pipeline -p <the pipeline name you want to remove>
+fly -t ci destroy-pipeline -p curl
 ```
 
 ## Suppliments
 
 If you want to know more about Concourse CI, the documentations below are great supporters!
 
-1. [Official documentation](https://concourse.ci/introduction.html)
-
-2. [Concourse Tutorial](https://github.com/starkandwayne/concourse-tutorial) by Stark & Wayne
+1. [Concourse Tutorial](https://github.com/starkandwayne/concourse-tutorial) by Stark & Wayne
   - [One of the tutorials which the official Concourse CI documentation introduces](https://concourse.ci/tutorials.html).
 
+2. [Official documentation](https://concourse.ci/introduction.html)
 3. [パイプラインベースのCI/CDツール Concourse CI入門](https://blog.ik.am/entries/379)
 4. [はじめてのConcourse CI](https://blog.ik.am/entries/380)
   - Written in Japanese.
