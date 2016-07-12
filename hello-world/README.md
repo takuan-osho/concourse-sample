@@ -75,7 +75,9 @@ curl -I https://google.com
 ```yaml
 ---
 platform: linux
-image: docker:///tutum/curl
+image_resource:
+  type: docker-image
+  source: {repository: tutum/curl}
 inputs:
   - name: my-ci-repository
 run:

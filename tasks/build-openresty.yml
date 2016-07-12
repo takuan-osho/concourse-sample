@@ -1,7 +1,9 @@
 ---
 platform: linux
 
-image: docker:///takuanosho/openresty-builder
+image_resource:
+  type: docker-image
+  source: {repository: takuanosho/openresty-builder}
 
 inputs:
   - name: openresty-builder
