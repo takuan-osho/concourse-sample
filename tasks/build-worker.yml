@@ -1,0 +1,21 @@
+---
+platform: linux
+
+image_resource:
+  type: docker-image
+  source:
+    repository: centos
+    tag: '6.7'
+
+inputs:
+- name: worker-source
+
+outputs:
+- name: work
+- name: rpm-package
+
+run:
+  path: worker-source/scripts/build-openresty2.sh
+
+params:
+  OUTPUTS_NAME: rpm-package

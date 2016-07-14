@@ -1,0 +1,28 @@
+---
+resources:
+  - name: worker-source
+    type: git
+    source:
+      uri: https://github.com/takuan-osho/concourse-sample.git
+      branch: dev/add-openresty
+
+jobs:
+  - name: job-build-worker
+    public: true
+    plan:
+      - get: worker-source
+      - task: build
+        file: worker-source/tasks/build-worker.yml
+        params:
+          OPENRESTY_VERSION: {{openresty-version}}
+          PCRE_VERSION: {{pcre-version}}
+          OPENSSL_VERSION: {{openssl-version}}
+          ZLIB_VERSION: {{zlib-version}}
+      - task: send-to-repository
+        file: worker-source/tasks/send-to-repository2.yml
+        params:
+          USERNAME: {{username}}
+          PASSWORD: {{password}}
+          TARGET_HOST: {{target-host}}
+          TARGET_PATH: {{target-path}}
+          OPENRESTY_VERSION: {{openresty-version}}
